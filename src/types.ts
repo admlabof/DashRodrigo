@@ -1,21 +1,20 @@
-
 export enum CompanyType {
-  TL = 'TL',
-  PL = 'PL',
-  NT = 'NT'
+  TL = "TL",
+  PL = "PL",
+  NT = "NT",
 }
 
 export enum TransactionStatus {
-  QUITADO = 'Quitado',
-  EM_ABERTO = 'Em Aberto',
-  CANCELADA = 'Cancelada'
+  QUITADO = "Quitado",
+  EM_ABERTO = "Em Aberto",
+  CANCELADA = "Cancelada",
 }
 
 export enum InvoiceType {
-  RECEITA = 'Receita',
-  DESPESA = 'Despesa',
-  TRANSFERENCIA = 'Transferência',
-  AJUSTE = 'Ajuste de Saldo'
+  RECEITA = "Receita",
+  DESPESA = "Despesa",
+  TRANSFERENCIA = "Transferência",
+  AJUSTE = "Ajuste de Saldo",
 }
 
 export interface Transaction {
@@ -59,7 +58,7 @@ export interface FilterState {
   types: InvoiceType[];
   categories: string[];
   costCenters: string[];
-  relatedToFilter: 'ALL' | 'PRO' | 'MIN';
+  relatedToFilter: "ALL" | "PRO" | "MIN";
 }
 
 export interface Cat2Mapping {
@@ -79,6 +78,8 @@ export interface RepasseGroup {
   supplierName?: string;
   hasNfIn: boolean;
   hasNfOut: boolean;
+  missingClientTxs?: Transaction[];
+  missingSupplierTxs?: Transaction[];
 }
 
 // Generic Bucket for aggregation with drill-down support
@@ -115,8 +116,8 @@ export interface ProvisionRow {
 export interface ReceivableRow {
   client: string;
   buckets: {
-    overduePrev: Bucket;   // Atrasado (Meses Anteriores)
-    currentMonth: Bucket;  // Vence no Mês Atual
+    overduePrev: Bucket; // Atrasado (Meses Anteriores)
+    currentMonth: Bucket; // Vence no Mês Atual
     month1: Bucket;
     month2: Bucket;
     month3: Bucket;
@@ -128,9 +129,9 @@ export interface ReceivableRow {
 export interface DRELine {
   label: string;
   isCalculated: boolean;
-  isHeader?: boolean; 
+  isHeader?: boolean;
   cat2?: string;
-  
+
   // CHANGED: Now using Bucket to support DrillDown
   values: Bucket[]; // 0-11 (Jan-Dec)
   total: Bucket;
@@ -143,7 +144,7 @@ export interface DRELine {
   nextMonthVal?: Bucket;
   nextMonthPlus1Val?: Bucket;
   yearTotal?: Bucket;
-  
+
   // Comparisons remain simple numbers/percentages
   budgetTotal?: number;
   lastYearTotal?: number;
@@ -156,7 +157,7 @@ export interface DRELine {
 export interface Person {
   id: string;
   extractionDate: string; // YYYY-MM-DD (First of month)
-  billableStatus: 'Billable' | 'NB' | '';
+  billableStatus: "Billable" | "NB" | "";
   name: string;
   doc: string; // CNPJ / CPF
   salary: number;
@@ -168,8 +169,8 @@ export interface Person {
 
   // Calculated Fields
   isValid: boolean; // Has Doc
-  isBillableMissing: boolean; 
-  contractType: 'PJ' | 'CLT' | 'Estagiário' | 'Sócio' | 'Outros';
+  isBillableMissing: boolean;
+  contractType: "PJ" | "CLT" | "Estagiário" | "Sócio" | "Outros";
   activeDays: number;
   proportionality: number; // 0 to 1
   estimatedCost: number;
@@ -186,10 +187,10 @@ export interface MonthlyPeopleMetrics {
   totalHeadcount: number; // Sum of Proportionality
   billableHeadcount: number;
   nbHeadcount: number;
-  
+
   totalCostBillable: number;
   totalCostNB: number;
-  
+
   avgSalaryPJ: number;
   avgCostCLT: number;
   avgCostEstag: number; // NEW
@@ -208,19 +209,19 @@ export interface MonthlyPeopleMetrics {
 
 // For C4 (Promotions)
 export interface PromotionRow {
-    doc: string;
-    name: string;
-    contractType: string;
-    admissionDate: string;
-    terminationDate?: string; // New field for filtering active
-    
-    currentSalary: number;
-    currentSalaryDate: string; // Month of current extraction
+  doc: string;
+  name: string;
+  contractType: string;
+  admissionDate: string;
+  terminationDate?: string; // New field for filtering active
 
-    previousSalary?: number;
-    lastIncreaseDate?: string; // Month when salary changed to current
+  currentSalary: number;
+  currentSalaryDate: string; // Month of current extraction
 
-    salary12MonthsAgo?: number; // Salary exactly 1 year before reference
+  previousSalary?: number;
+  lastIncreaseDate?: string; // Month when salary changed to current
 
-    hasIncreaseInPeriod: boolean;
+  salary12MonthsAgo?: number; // Salary exactly 1 year before reference
+
+  hasIncreaseInPeriod: boolean;
 }
